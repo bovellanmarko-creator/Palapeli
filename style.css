@@ -1,142 +1,148 @@
-/* --- ASETUKSET VW-YKSIK�ILL� --- */
+/* --- ASETUKSET VW-YKSIKÖILLÄ --- */
 :root {
-    /* M��ritell��n palan koko suhteellisena yksikk�n� (5vw = 5% n�yt�n leveydest�) */
-    --tile-size: 5vw; 
-    /* Pelialueen koko (4 palaa * 5vw = 20vw) */
-    --board-size: 20vw;
-    
-    --pop-pink: #FF1493; 
-    --pop-yellow: #FFFF00; 
-    --pop-red: #FF0000;
-    --newsprint-white: #F9F7E8; 
-    --newsprint-black: #111111; 
+    /* Määritellään palan koko suhteellisena yksikkönä (5vw = 5% näytön leveydestä) */
+    --tile-size: 5vw; 
+    /* Pelialueen koko (4 palaa * 5vw = 20vw) */
+    --board-size: 20vw;
+    
+    --pop-pink: #FF1493; 
+    --pop-yellow: #FFFF00; 
+    --pop-red: #FF0000;
+    --newsprint-white: #F9F7E8; 
+    --newsprint-black: #111111; 
 }
 
 body {
-    font-family: 'Times New Roman', Times, serif; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #333; 
-    color: var(--newsprint-black);
-    padding: 10px; 
-    margin: 0;
-    overflow-x: hidden; 
+    font-family: 'Times New Roman', Times, serif; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #333; 
+    color: var(--newsprint-black);
+    padding: 10px; 
+    margin: 0;
+    overflow-x: hidden; 
 }
 
 /* --- LEHDEN KANSI JA SKAALAUS (75% MAX) --- */
 
 #game-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 75%; 
-    width: 95%; 
-    padding: 20px 30px; 
-    background-color: var(--newsprint-white); 
-    border: 8px double var(--newsprint-black); 
-    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.4); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 75%; 
+    width: 95%; 
+    padding: 20px 30px; 
+    background-color: var(--newsprint-white); 
+    border: 8px double var(--newsprint-black); 
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.4); 
 }
 
 /* --- SANOMALEHDEN OTSIKKO --- */
 header {
-    width: 100%;
-    text-align: center;
-    border-bottom: 2px solid var(--newsprint-black);
-    margin-bottom: 15px; 
-    padding-bottom: 5px; 
+    width: 100%;
+    text-align: center;
+    border-bottom: 2px solid var(--newsprint-black);
+    margin-bottom: 15px; 
+    padding-bottom: 5px; 
 }
 
 h1 {
-    font-family: Impact, sans-serif; 
-    color: var(--pop-red); 
-    -webkit-text-stroke: 1px var(--newsprint-black); 
-    text-stroke: 1px var(--newsprint-black);
-    letter-spacing: 0.2vw; 
-    margin: 0;
-    font-size: 4vw; 
-    line-height: 1.0;
+    font-family: Impact, sans-serif; 
+    color: var(--pop-red); 
+    -webkit-text-stroke: 1px var(--newsprint-black); 
+    text-stroke: 1px var(--newsprint-black);
+    letter-spacing: 0.2vw; 
+    margin: 0;
+    font-size: 4vw; 
+    line-height: 1.0;
 }
 
 header::after {
-    content: "SUUR-MAKO-SIVUSTO | Torstai, 11. joulukuuta 2025 | Hinta: 50 Cents";
-    display: block;
-    font-family: Arial, sans-serif;
-    font-size: 1vw; 
-    color: var(--newsprint-black);
-    margin-top: 5px;
+    content: "SUUR-MAKO-SIVUSTO | Torstai, 11. joulukuuta 2025 | Hinta: 50 Cents";
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 1vw; 
+    color: var(--newsprint-black);
+    margin-top: 5px;
 }
 
 /* --- PELIALUE (KUVA) --- */
 
 #game-board {
-    display: grid;
-    grid-template-columns: repeat(4, var(--tile-size)); 
-    grid-template-rows: repeat(4, var(--tile-size));     
-    width: var(--board-size); 
-    height: var(--board-size);
-    border: 3px solid var(--newsprint-black); 
-    margin: 15px 0 20px; 
+    display: grid;
+    grid-template-columns: repeat(4, var(--tile-size)); 
+    grid-template-rows: repeat(4, var(--tile-size));     
+    width: var(--board-size); 
+    height: var(--board-size);
+    border: 3px solid var(--newsprint-black); 
+    margin: 15px 0 15px; /* Pienennetty ylämarginaali painikkeen tieltä */
 }
 
 .puzzle-slot {
-    border: 1px solid rgba(0, 0, 0, 0.2); 
-    background-color: transparent; 
+    border: 1px solid rgba(0, 0, 0, 0.2); 
+    background-color: transparent; 
 }
 
 /* --- PALAT JA TARJOTIN --- */
 
 #pieces-tray {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly; 
-    width: 100%;
-    min-height: 8vw; 
-    padding: 10px 0; 
-    margin-top: 15px; 
-    border-top: 2px solid var(--newsprint-black); 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly; 
+    width: 100%;
+    min-height: 8vw; 
+    padding: 10px 0; 
+    margin-top: 15px; 
+    border-top: 2px solid var(--newsprint-black); 
 }
 
 .puzzle-piece {
-    width: var(--tile-size);
-    height: var(--tile-size);
-    box-sizing: border-box;
-    border: 1px solid var(--newsprint-black); 
-    cursor: grab;
-    transition: all 0.2s ease-out; 
-    /* MUUTOS: P�ivitetty kuvan nimi */
-    background-image: url('palapeli.jpg'); 
-    background-size: var(--board-size) var(--board-size); 
-    margin: 3px; 
+    width: var(--tile-size);
+    height: var(--tile-size);
+    box-sizing: border-box;
+    border: 1px solid var(--newsprint-black); 
+    cursor: grab;
+    transition: all 0.2s ease-out; 
+    background-image: url('palapeli.jpg'); 
+    background-size: var(--board-size) var(--board-size); 
+    margin: 3px; 
 }
 
-/* --- UUSI SUURENNUSLUOKKA (ILMAN REUNAA) --- */
-.magnified {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(5); 
-    z-index: 2000; 
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    border: none !important; 
+/* --- UUSI: ALOITA ALUSTA -PAINIKE --- */
+#reset-button {
+    background-color: var(--pop-yellow);
+    color: var(--newsprint-black);
+    border: 3px solid var(--newsprint-black);
+    padding: 10px 20px;
+    font-family: Impact, sans-serif;
+    font-size: 1.5vw;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.1s;
+}
+
+#reset-button:hover {
+    background-color: var(--pop-pink);
+    color: var(--newsprint-white);
 }
 
 /* --- LOPPUOSAT --- */
 .is-dragging {
-    opacity: 0.7;
-    z-index: 1000;
-    cursor: grabbing;
+    opacity: 0.7;
+    z-index: 1000;
+    cursor: grabbing;
 }
 
 .puzzle-piece.solved {
-    border: none; 
-    cursor: default !important;
+    border: none; 
+    cursor: default !important;
 }
 
 .puzzle-slot.solved-slot {
-    border: none !important;
+    border: none !important;
 }
 
 .finished-board {
-    border: none !important;
+    border: none !important;
 }
