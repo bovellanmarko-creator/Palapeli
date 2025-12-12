@@ -5,6 +5,8 @@ const TILE_COUNT = GRID_SIZE * GRID_SIZE; 
 
 const gameBoard = document.getElementById('game-board');
 const piecesTray = document.getElementById('pieces-tray');
+// UUSI: Tallenna pelin tila, jotta tiedetään, missä palojen pitäisi olla
+let correctSlotPositions = {};
 
 let pieces = []; 
 let draggingElement = null;
@@ -30,13 +32,9 @@ function createPieces() {
     gameBoard.innerHTML = '';
     piecesTray.innerHTML = '';
     pieces = [];
+    correctSlotPositions = {};
     piecesTray.style.display = 'flex'; // Varmista, että tarjotin näkyy
-    const gameContainer = document.getElementById('game-container');
-    if (gameContainer) {
-        gameContainer.style.boxShadow = '10px 10px 0px rgba(0, 0, 0, 0.4)';
-    }
     gameBoard.classList.remove('finished-board');
-
 
     const TILE_SIZE = getTileSize(); 
     const BOARD_SIZE = GRID_SIZE * TILE_SIZE; 
@@ -71,6 +69,18 @@ function createPieces() {
         slot.classList.add('puzzle-slot');
         slot.dataset.id = i; 
         gameBoard.appendChild(slot);
+
+        // Tallenna aukon sijainti suhteessa alustaan
+        // Nämä koordinaatit ovat tärkeitä tuplaklikkaukselle!
+        const slotRect = slot.getBoundingClientRect();
+        const boardRect = gameBoard.getBoundingClientRect();
+        correctSlotPositions[i] = {
+            // Huom: Nämä ovat suhteellisia koordinaatteja, ja ne tarvitsevat vielä korjauksen
+            // (ne eivät ole absoluuttisia pixeleitä ennen kuin peli on aloitettu)
+            // Laitetaan tässä suhteellinen indeksi, jota käytetään myöhemmin
+            col: i % GRID_SIZE,
+            row: Math.floor(i / GRID_SIZE)
+        };
     }
 
     addEventListeners();
@@ -84,6 +94,8 @@ function shuffleArray(array) {
     return array;
 }
 
+// --- POISTETTU: SUURENNUS FUNKTIOT ---
+
 // --- UUSI: TUPLAKLIKKAUS FUNKTIO ---
 
 function moveToCorrectPosition(e) {
@@ -93,14 +105,9 @@ function moveToCorrectPosition(e) {
     
     // Tarkista, ettei paikka ole jo täytetty
     if (targetSlot && targetSlot.children.length === 0) {
-        // Poista pala aiemmasta sijainnista
-        const parentSlot = piece.parentNode;
-        if (parentSlot) {
-            // Jos pala oli ratkaistussa aukossa, poista solved-luokat aukosta
-            if (parentSlot.classList.contains('solved-slot')) {
-                parentSlot.classList.remove('solved-slot');
-            }
-            parentSlot.removeChild(piece);
+        // Poista pala aiemmasta sijainnista (oli se sitten tarjottimella tai väärässä paikassa)
+        if (piece.parentNode) {
+            piece.parentNode.removeChild(piece);
         }
 
         // Siirrä pala oikeaan aukkoon
@@ -123,6 +130,7 @@ function moveToCorrectPosition(e) {
 
 function resetGame() {
     createPieces(); // Luo palat uudelleen sekoittaen ne
+    document.getElementById('game-container').style.boxShadow = '10px 10px 0px rgba(0, 0, 0, 0.4)';
 }
 
 
@@ -137,10 +145,13 @@ function addEventListeners() {
     
     // B. Palojen käsittely
     pieces.forEach(piece => {
+        // Poistettu: mousedown ja mouseup (suurennus)
+
         // UUSI: Tuplaklikkaus
         piece.addEventListener('dblclick', moveToCorrectPosition);
         
         piece.addEventListener('dragstart', (e) => {
+            // clearMagnification(); // Poistettu
             e.target.classList.add('is-dragging');
             e.dataTransfer.setData('text/plain', e.target.dataset.id);
             e.dataTransfer.effectAllowed = 'move';
@@ -160,6 +171,7 @@ function addEventListeners() {
     });
    
     // 2. Tarjotin (Sallii palasten siirtämisen pois alustalta)
+    // TÄMÄ VAATII, että `piecesTray` on HTML:ssä asetettu hyväksymään pudotuksia.
     piecesTray.addEventListener('dragover', (e) => e.preventDefault());
     piecesTray.addEventListener('drop', handleDropToTray);
     
@@ -173,12 +185,6 @@ function addEventListeners() {
         if (!targetElement || targetElement.children.length > 0) return; // Vain tyhjiin aukkoihin
 
         const slotId = targetElement.dataset.id;
-        
-        // Poista pala aiemmasta aukosta/tarjottimelta
-        const previousParent = piece.parentNode;
-        if (previousParent && previousParent.classList.contains('puzzle-slot')) {
-            previousParent.classList.remove('solved-slot');
-        }
         
         if (pieceId === slotId) {
             targetElement.appendChild(piece);
@@ -188,7 +194,7 @@ function addEventListeners() {
             checkWinCondition();
         } else {
             targetElement.appendChild(piece);
-            piece.classList.remove('solved');
+            piece.classList.remove('solved'); // Varmista, että solved poistuu, jos siirretään
             piece.setAttribute('draggable', true);
         }
     }
@@ -229,6 +235,7 @@ function checkWinCondition() {
 
 // --- Skaalautumisen kuuntelija ---
 window.addEventListener('resize', () => {
+    // clearMagnification(); // Poistettu
     // Uudelleenluonti hoitaa nollauksen ja sekoituksen
     createPieces(); 
 });
